@@ -12,7 +12,6 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 BOT_TOKEN = "8634088211:AAET10Uduaz3Z2myTvRM4WMn79WoSVNa35k"
-# الـ API Token المستخرج من صورتك الأخيرة
 COC_API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE3MjU2M2M2MjY2NSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGwiLCJmcm9tU2VydmljZSI6InpldXMiLCJkZXNjcmlwdGlvbiI6InYyI1M2MjhmLTRkZGE1ZTcwOWFjTNdUONiwic3ViIjoicGV2ZWxvcGVyLzhmNjcXNzLLWQ0ZjktNDAxZZi05NTgxLTNhMzc3TgzMjdkMiIsInNjb3BlcyI6WyJjb2Fzc2JdLcJsaw1pdHMiT0ltNInRpZXJzIjoiJkZXZlb3A2ZXI2ZSIwZWlsZS1lnRocm9dGxpb21c1fSx7ImNpZHJzIjpbIjI0LjU3LjEiLCIyMTYuMjQuNTcuMiJdLCJ0ZXJtcyI6IHNjX0EXBLIjoiY2xpcZW5OIn1dfQ.6WKwTFcHHfSa3tDdhEU8Blw9vGXBwo1YvxMCtyiaOyUQK5gTOAwa94219d5q-znQgiKviKXWiKuCnXUPeJyyhQ"
 
 logging.basicConfig(level=logging.INFO)
@@ -224,10 +223,8 @@ async def start_services():
     await init_db()
     print("🚀 البوت والسيرفر المجاني يعملان بنجاح...")
     
-    # تشغيل استعلامات التليجرام في الخلفية
-    asyncio.create_task(dp.start_polling(bot))
+    # تشغيل استعلامات التليجرام بداخل نفس الـ Loop
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(start_services())
-    loop.run_forever()
+    asyncio.run(start_services())
