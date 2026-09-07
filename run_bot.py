@@ -12,6 +12,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 BOT_TOKEN = "8634088211:AAET10Uduaz3Z2myTvRM4WMn79WoSVNa35k"
+# الـ API Token المستخرج من صورتك الأخيرة
 COC_API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE3MjU2M2M2MjY2NSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGwiLCJmcm9tU2VydmljZSI6InpldXMiLCJkZXNjcmlwdGlvbiI6InYyI1M2MjhmLTRkZGE1ZTcwOWFjTNdUONiwic3ViIjoicGV2ZWxvcGVyLzhmNjcXNzLLWQ0ZjktNDAxZZi05NTgxLTNhMzc3TgzMjdkMiIsInNjb3BlcyI6WyJjb2Fzc2JdLcJsaw1pdHMiT0ltNInRpZXJzIjoiJkZXZlb3A2ZXI2ZSIwZWlsZS1lnRocm9dGxpb21c1fSx7ImNpZHJzIjpbIjI0LjU3LjEiLCIyMTYuMjQuNTcuMiJdLCJ0ZXJtcyI6IHNjX0EXBLIjoiY2xpcZW5OIn1dfQ.6WKwTFcHHfSa3tDdhEU8Blw9vGXBwo1YvxMCtyiaOyUQK5gTOAwa94219d5q-znQgiKviKXWiKuCnXUPeJyyhQ"
 
 logging.basicConfig(level=logging.INFO)
@@ -61,14 +62,17 @@ async def get_player_data(tag: str):
         "Accept": "application/json"
     }
     
-    async with aiohttp.ClientSession() as session:
-        try:
+    try:
+        async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=headers, timeout=10) as resp:
                 if resp.status == 200:
                     return await resp.json()
-                return None
-        except Exception:
-            return None
+                else:
+                    logging.error(f"CoC API Error Code: {resp.status}")
+                    return None
+    except Exception as e:
+        logging.error(f"Network error CoC API: {e}")
+        return None
 
 @dp.message(CommandStart())
 async def start_cmd(msg: types.Message, state: FSMContext):
@@ -102,7 +106,7 @@ async def process_tag_check(msg: types.Message, state: FSMContext):
         )
         await msg.answer(text, parse_mode="Markdown")
     else:
-        await msg.answer("❌ تعذر جلب البيانات تقنياً. تأكد من إرسال الـ Tag الصحيح شاملاً الهاشتاق #.")
+        await msg.answer("❌ تعذر جلب البيانات تقنياً. تأكد من إرسال الـ Tag الصحيح.")
     
     await state.clear()
 
