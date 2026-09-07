@@ -12,7 +12,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 BOT_TOKEN = "8634088211:AAET10Uduaz3Z2myTvRM4WMn79WoSVNa35k"
-COC_API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE3MjU2M2M2MjY2NSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGwiLCJmcm9tU2VydmljZSI6InpldXMiLCJkZXNjcmlwdGlvbiI6InYyI1M2MjhmLTRkZGE1ZTcwOWFjTNdUONiwic3ViIjoicGV2ZWxvcGVyLzhmNjcXNzLLWQ0ZjktNDAxZZi05NTgxLTNhMzc3TgzMjdkMiIsInNjb3BlcyI6WyJjb2Fzc2JdLcJsaw1pdHMiT0ltNInRpZXJzIjoiJkZXZlb3A2ZXI2ZSIwZWlsZS1lnRocm9dGxpb21c1fSx7ImNpZHJzIjpbIjIwOS4xOTguMTMyLjI0OSJdLCJ0ZXJtcyI6IHNjX0EXBLIjoiY2xpcZW5OIn1dfQ.6WKwTFcHHfSa3tDdhEU8Blw9vGXBwo1YvxMCtyiaOyUQK5gTOAwa94219d5q-znQgiKviKXWiKuCnXUPeJyyhQ"
+COC_API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lc3RhbXAiOjE3MjU2M2M2MjY2NSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGwiLCJmcm9tU2VydmljZSI6InpldXMiLCJkZXNjcmlwdGlvbiI6InYyI1M2MjhmLTRkZGE1ZTcwOWFjTNdUONiwic3ViIjoicGV2ZWxvcGVyLzhmNjcXNzLLWQ0ZjktNDAxZZi05NTgxLTNhMzc3TgzMjdkMiIsInNjb3BlcyI6WyJjb2Fzc2JdLcJsaw1pdHMiT0ltNInRpZXJzIjoiJkZXZlb3A2ZXI2ZSIwZWlsZS1lnRocm9dGxpb21c1fSx7ImNpZHJzIjpbIjI0LjU3LjEiLCIyMTYuMjQuNTcuMiJdLCJ0ZXJtcyI6IHNjX0EXBLIjoiY2xpcZW5OIn1dfQ.6WKwTFcHHfSa3tDdhEU8Blw9vGXBwo1YvxMCtyiaOyUQK5gTOAwa94219d5q-znQgiKviKXWiKuCnXUPeJyyhQ"
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
@@ -203,7 +203,7 @@ async def profile_info(msg: types.Message):
     )
     await msg.answer(text, parse_mode="Markdown")
 
-# --- خادم الويب والمهمة الخلفية لتفادي Timed Out في Render ---
+# --- خادم الويب السريع لمنع خطأ Timed Out في Render ---
 async def handle_ping(request):
     return web.Response(text="Bot is live!")
 
@@ -220,7 +220,7 @@ async def start_services():
     await init_db()
     print("🚀 البوت والسيرفر المجاني يعملان بنجاح...")
     
-    # تشغيل البوت كمهام خلفية دون إيقاف سيرفر الويب
+    # تشغيل استعلامات التليجرام في الخلفية
     asyncio.create_task(dp.start_polling(bot))
 
 if __name__ == "__main__":
