@@ -203,24 +203,27 @@ async def profile_info(msg: types.Message):
     )
     await msg.answer(text, parse_mode="Markdown")
 
-# --- خادم وهمي لإسكات تحذير Port الخاص بـ Render ---
+# --- خادم الويب والمهمة الخلفية لتفادي Timed Out في Render ---
 async def handle_ping(request):
     return web.Response(text="Bot is live!")
 
-async def start_web_server():
+async def start_services():
     app = web.Application()
     app.router.add_get('/', handle_ping)
+    
+    port = int(os.environ.get("PORT", 10000))
     runner = web.AppRunner(app)
     await runner.setup()
-    port = int(os.environ.get("PORT", 10000))
     site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
-
-async def main():
+    
     await init_db()
-    await start_web_server()
     print("🚀 البوت والسيرفر المجاني يعملان بنجاح...")
-    await dp.start_polling(bot)
+    
+    # تشغيل البوت كمهام خلفية دون إيقاف سيرفر الويب
+    asyncio.create_task(dp.start_polling(bot))
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(start_services())
+    loop.run_forever()
